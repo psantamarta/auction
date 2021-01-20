@@ -78,26 +78,17 @@ public class Auction
      */
     public Lot getLot(int lotNumber)
     {
-        if((lotNumber >= 1) && (lotNumber < nextLotNumber)) {
-            // The number seems to be reasonable.
-            Lot selectedLot = lots.get(lotNumber - 1);
-            // Include a confidence check to be sure we have the
-            // right lot.
-            if(selectedLot.getNumber() != lotNumber) {
-                System.out.println("Internal error: Lot number " +
-                    selectedLot.getNumber() +
-                    " was returned instead of " +
-                    lotNumber);
-                // Don't return an invalid lot.
-                selectedLot = null;
+        Lot selectedLot = null;
+        if(lotNumber >= 1){
+            Iterator<Lot> it = lots.iterator();   
+            while (it.hasNext()){
+                Lot lotActually = it.next();
+                if(lotActually.getNumber() == lotNumber){
+                    selectedLot = lotActually;
+                }
             }
-            return selectedLot;
         }
-        else {
-            System.out.println("Lot number: " + lotNumber +
-                " does not exist.");
-            return null;
-        }
+        return selectedLot;
     }
 
     public void close(){
@@ -113,7 +104,7 @@ public class Auction
             }
         }
     }
-    
+
     public ArrayList<Lot> getUnsoId(){
         ArrayList<Lot> lotsNotSold = new ArrayList<Lot>();
         Iterator<Lot> it = lots.iterator();        
@@ -125,4 +116,24 @@ public class Auction
         }
         return lotsNotSold;     
     }
-}
+    
+        /** 
+     * Elimina el lote con el número de lote especificado.
+     * @param number El número del lote que hay que eliminar,
+     * @return El lote con el número dado o null si no existe tal lote.
+     */
+    public Lot removeLot(int number){
+        Lot selectedLot = null;
+        Iterator<Lot> it = lots.iterator();        
+        if(number >= 1){               
+            while (it.hasNext()){
+                Lot lotActually = it.next();
+                if(lotActually.getNumber() == number){
+                    selectedLot = lotActually;
+                    it.remove();
+                }
+            }
+        }
+        return selectedLot;
+    }
+    }
